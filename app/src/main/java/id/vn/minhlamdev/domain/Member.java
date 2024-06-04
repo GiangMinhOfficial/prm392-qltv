@@ -1,18 +1,21 @@
 package id.vn.minhlamdev.domain;
 
 public class Member {
+    private int id;
     private int image;
     private String name;
     private String description;
 
-    public Member(int image, String name, String description) {
+    public Member(int id, int image, String name, String description) {
+        this.id = id;
         this.image = image;
         this.name = name;
         this.description = description;
     }
 
-    public Member(String name) {
+    public Member(String name, String description) {
         this.name = name;
+        this.description = description;
     }
 
     public int getImage() {

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -60,7 +61,6 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
         holder.etName.setText(member.getName());
         holder.etDescription.setText(member.getDescription());
 
-        setClickedPosition(position);
 
 //        holder.ivAvatar.setOnClickListener(v -> {
 //            RecyclerView recyclerView = (RecyclerView) holder.ivAvatar.getParent().getParent();
@@ -75,10 +75,10 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
         ImageView ivAvatar;
         EditText etName;
         EditText etDescription;
+        TextView tvMemberId;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -95,7 +95,11 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
         public void onClick(View v) {
             RecyclerView recyclerView = (RecyclerView) v.getParent();
             recyclerView.showContextMenuForChild(ivAvatar);
-            setClickedMem(new Member(etName.getText().toString()));
+
+            setClickedMem(new Member(etName.getText().toString(), etDescription.getText().toString()));
+
+            int pos = getAdapterPosition();
+            setClickedPosition(pos);
         }
 
 //        private void event() {

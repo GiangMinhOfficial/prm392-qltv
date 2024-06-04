@@ -57,29 +57,62 @@ public class MenuManagement extends AppCompatActivity {
     }
 
     private void init() {
-        members.add(new Member(R.drawable._1, "vượng", "con khỉ"));
-        members.add(new Member(R.drawable._2, "cat", "người mèo"));
-        members.add(new Member(R.drawable._3, "huma", "nhân vật trong avatar 2"));
+        members.add(new Member(1, R.drawable._1, "vượng", "con khỉ"));
+        members.add(new Member(2, R.drawable._2, "cat", "người mèo"));
+        members.add(new Member(3, R.drawable._3, "huma", "nhân vật trong avatar 2"));
     }
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-
         int position = memberAdapter.GetClickedPosition();
-        String mName = findViewById(R.id.name).toString();
-        Member member = memberAdapter.getClickedMem();
 
         int itemId = item.getItemId();
         if (itemId == R.id.action_edit) {
             Toast.makeText(this, "sửa nè", Toast.LENGTH_LONG).show();
-            updateAlert("Do you want to Update???", position, member);
+
+            Member newMember = memberAdapter.getClickedMem();
+            Member olderMember = members.get(position);
+            olderMember.setName(newMember.getName());
+            olderMember.setDescription(newMember.getDescription());
+
+            updateAlert("Do you want to Update???", position, olderMember);
             return true;
+
         } else if (itemId == R.id.action_delete) {
             Toast.makeText(this, "xóa nè", Toast.LENGTH_LONG).show();
+            deleteAlert(position);
             return true;
         }
 
         return super.onContextItemSelected(item);
+    }
+
+    public void deleteAlert(int pos) {
+        AlertDialog.Builder al = new AlertDialog.Builder(this);
+        al.setTitle("Do you want to delete " + members.get(pos));
+
+        al.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                members.remove(pos);
+                memberAdapter.notifyDataSetChanged();
+                Toast.makeText(MenuManagement.this, "Yes DELETE succeed", Toast.LENGTH_SHORT).show();
+            }
+        });
+        al.setNegativeButton("NoNo", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(MenuManagement.this, "y picked No", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });
+        al.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        al.create().show();
     }
 
     private void updateAlert(String mess, int pos, Member member) {
